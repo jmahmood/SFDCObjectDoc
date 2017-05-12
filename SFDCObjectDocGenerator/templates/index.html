@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{name}}</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+</head>
+<body>
+<h1>{{name}}</h1>
+<h3>{{description}}</h3>
+<strong>Fields</strong>
+<div class="table-responsive">
+    <table class="table table-striped">
+    <tr>
+       <th>Name</th><th>Description</th><th>Details</th>
+    </tr>
+    {% for key, dict in fields.items() %}
+    <tr>
+        <td class="col-xs-2">{{dict.fullName}}</td>
+        <td class="col-xs-4 {% if '@todo' in dict.description %}alert alert-danger{%endif%}">{{dict.label}}<br>{{dict.description}}</td>
+        <td class="col-xs-6">
+            {{dict.type}}{%if dict.length != '0'%}({{dict.length}}){%endif%}
+            {% if dict.formula %} (Formula) <pre>{{dict.formula}}</pre><br>{%endif%}
+            {% if dict.field_errors %}<br>
+                <strong>Related Validation Rules:</strong>
+                <ol>{%for fe in dict.field_errors %}<li>{{fe}}</li>{%endfor%}</ol>
+                {% endif %}
+            </td>
+    </tr>
+    {% endfor %}
+    </table>
+</div>
+<strong>Validation Rules</strong>
+<div class="table-responsive">
+    <table class="table table-striped">
+    <tr>
+      <th>IsActive</th> <th>Name</th><th>Description</th><th>Details</th>
+    </tr>
+    {% for rule in rules %}
+    <tr>
+        <td class="col-xs-1">{% if rule.active == 'true' %}✔{%endif%}</td>
+        <td class="col-xs-1">{{rule.fullName}}</td>
+        <td class="col-xs-4">{{rule.description}}<br>{{rule.errorMessage}}</td>
+        <td class="col-xs-6">(Formula) <pre>{{rule.errorConditionFormula}}</pre>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</div>
+</body>
+</html>
